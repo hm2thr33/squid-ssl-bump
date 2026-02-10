@@ -1,0 +1,25 @@
+# Squid cache and runtime files
+squid/cache/*
+squid/logs/*
+squid/ssl/*.der
+squid/ssl/*.pem
+squid/ssl/*.key
+
+# Keep directory structure
+!squid/cache/.gitkeep
+!squid/logs/.gitkeep
+!squid/ssl/.gitkeep
+
+# Docker volumes
+.docker/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

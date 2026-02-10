@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  squid:
+    # Build custom Squid image with SSL bump support
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: squid-ssl-bump:latest
+    container_name: squid-proxy
+    # Expose Squid proxy port to host
+    ports:
+      - "3128:3128"   # Standard proxy port (no SSL bump)
+      - "4128:4128"   # SSL bump enabled proxy port
+    
+    # Mount local directories for configuration, cache, and logs
+    volumes:
+      - ./squid/conf/squid.conf:/etc/squid/squid.conf:ro        # Configuration file (read-only)
+      - ./squid/cache:/var/cache/squid                          # Cache directory
+      - ./squid/logs:/var/log/squid                             # Log files
+      - ./squid/ssl:/etc/squid/ssl                              # SSL certificates for MITM
+    
+    # Restart policy
+    restart: unless-stopped
+
+    environment:
+      CN: proxy.squid.com
+      O: squid
+      OU: squid
+      C: US
+    
+    # Network mode (optional: use bridge for standard setup)
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    driver: bridge
