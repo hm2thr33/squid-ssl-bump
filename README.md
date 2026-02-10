@@ -289,43 +289,6 @@ This proxy should **not** be exposed to untrusted networks without authenticatio
 └── README.md                   # This file
 ```
 
-## Audit Summary
-
-This project has been audited with the following findings:
-
-### ✓ Strengths
-
-- **Lightweight base**: Uses Alpine 3.20, minimal image size
-- **Well-structured**: Clear separation of configuration, cache, logs, and certificates
-- **Automated setup**: Entrypoint script handles all initialization
-- **Flexible certificate management**: Supports both auto-generation and custom CAs
-- **Proper security**: Runs squid as non-root user with appropriate permissions
-- **Good configuration**: squid.conf includes proper ACLs, caching, and SSL bump settings
-
-### ⚠️ Areas for Improvement
-
-- Consider adding Docker health checks for production deployments:
-  ```yaml
-  healthcheck:
-    test: ["CMD", "squid", "-k", "check"]
-    interval: 30s
-    timeout: 10s
-    retries: 3
-  ```
-
-- Backup strategy for CA certificates before container removal
-- Consider network policies or firewall rules to restrict access
-- Consider external syslog or centralized logging for production
-- Rate limiting or traffic shaping features may be useful for some deployments
-
-### Recommendations
-
-1. Keep the Alpine base image updated regularly for security patches
-2. Monitor disk usage for cache directory periodically
-3. Review squid.conf settings when traffic patterns change
-4. Document any custom ACL rules specific to your deployment
-5. Consider using named volumes for production to persist cache and logs
-
 ## Maintenance
 
 ### Rebuild the Image
